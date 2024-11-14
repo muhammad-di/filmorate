@@ -12,8 +12,9 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 public class User {
     @Builder.Default
-    private final UUID id = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
     private final String email;
+    private String login;
     private String name;
     private LocalDate birthday;
 }
