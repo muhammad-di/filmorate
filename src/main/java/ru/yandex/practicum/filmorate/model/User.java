@@ -4,13 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
 @Data
 @Builder(toBuilder = true)
-@EqualsAndHashCode(of = "id")
 public class User {
     private static long nextId = 0;
     private long id;
