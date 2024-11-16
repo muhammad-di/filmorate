@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
 
 import java.util.Collection;
@@ -33,7 +32,7 @@ public class FilmController {
     @PostMapping
     public Film create(@RequestBody @Valid Film film) {
         validators.forEach(v -> v.validate(film));
-        film.setId(User.getNextId());
+        film.setId(Film.getNextId());
         films.put(film.getId(), film);
         log.debug("users: {}", film);
         return film;
