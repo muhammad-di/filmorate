@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validation.user.impl.EmailValidator;
 import ru.yandex.practicum.filmorate.validation.user.impl.LoginValidator;
 
 import java.time.LocalDate;
