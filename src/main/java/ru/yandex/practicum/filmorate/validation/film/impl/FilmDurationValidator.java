@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
 
 @Component
 public class FilmDurationValidator implements FilmValidator {
-    private final static long MIN_DURATION = 0;
+    private static final long MIN_DURATION = 0;
 
     @Override
     public void validate(Film film) {

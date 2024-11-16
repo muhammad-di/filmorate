@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Component
 public class FilmReleaseDateValidator implements FilmValidator {
-    private final static LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
+    private static final LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
     @Override
     public void validate(Film film) {

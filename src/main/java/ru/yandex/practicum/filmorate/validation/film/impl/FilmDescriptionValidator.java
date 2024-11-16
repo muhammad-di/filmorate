@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
 
 @Component
 public class FilmDescriptionValidator implements FilmValidator {
-    private final static int MAX_LENGTH_OF_FILM_DESCRIPTION = 200;
+    private static final int MAX_LENGTH_OF_FILM_DESCRIPTION = 200;
 
     @Override
     public void validate(Film film) {
