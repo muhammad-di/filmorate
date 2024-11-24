@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 public class UserServiceImplTest {
     private static UserService userService;
     private static UserStorage userStorage;
-    private static List<UserValidator> validators;
     private User firstUser;
     private User secondUser;
     private User thirdUser;
@@ -38,7 +37,7 @@ public class UserServiceImplTest {
     @BeforeAll
     public static void setUp() {
         userStorage = mock(InMemoryUserStorage.class);
-        validators = List.of(
+        List<UserValidator> validators = List.of(
                 mock(BirthdayValidator.class),
                 mock(EmailValidator.class),
                 mock(LoginValidator.class),
