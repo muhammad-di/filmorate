@@ -12,4 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new ConcurrentHashMap<>();
+
+    @Override
+    public User create(final User user) {
+        user.setId(User.getNextId());
+
+        return users.put(user.getId(), user);
+    }
 }
