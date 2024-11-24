@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validation.user.UserValidator;
+import ru.yandex.practicum.filmorate.service.user.UserService;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RestController
@@ -25,36 +21,26 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 @Validated
 public class UserController {
-    private final List<UserValidator> validators;
-    private final Map<Long, User> users = new ConcurrentHashMap<>();
+    private final UserService userService;
 
     @PostMapping
-    public User create(@RequestBody @Valid User user) {
-        validators.forEach(v -> v.validate(user));
-        user.setId(User.getNextId());
-        users.put(user.getId(), user);
-        log.debug("users created: {}", user);
-        return user;
+    public User create(@RequestBody @Valid final User user) {
+        log.debug("users create called in Controller with argument: {}", user);
+
+        return userService.create(user);
     }
 
     @PutMapping
-    public User update(@RequestBody @Valid User user) {
-        contains(user);
-        validators.forEach(v -> v.validate(user));
-        users.put(user.getId(), user);
-        log.debug("users updated: {}", users);
+    public User update(@RequestBody @Valid final User user) {
+        log.debug("users update called in Controller with argument: {}", user);
+
         return user;
     }
 
     @GetMapping
     public Collection<User> findAll() {
-        return users.values();
-    }
+        log.debug("users findAll called in Controller");
 
-
-    private void contains(User user) {
-        if (!users.containsKey(user.getId())) {
-            throw new ValidationException("User does not exist");
-        }
+        return userService.findAll();
     }
 }
