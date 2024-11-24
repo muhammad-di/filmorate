@@ -33,7 +33,7 @@ public class UserController {
         validators.forEach(v -> v.validate(user));
         user.setId(User.getNextId());
         users.put(user.getId(), user);
-        log.debug("users: {}", user);
+        log.debug("users created: {}", user);
         return user;
     }
 
@@ -42,7 +42,7 @@ public class UserController {
         contains(user);
         validators.forEach(v -> v.validate(user));
         users.put(user.getId(), user);
-        log.debug("users: {}", users);
+        log.debug("users updated: {}", users);
         return user;
     }
 
