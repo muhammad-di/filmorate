@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         return userStorage.findAll();
     }
 
-    private void contains(User user) {
+    private void contains(final User user) {
         if (!userStorage.contains(user)) {
             throw new ValidationException("User does not exist");
         }
