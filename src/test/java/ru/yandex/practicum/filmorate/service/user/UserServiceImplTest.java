@@ -17,12 +17,16 @@ import ru.yandex.practicum.filmorate.validation.user.impl.UserNameValidator;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -194,6 +198,81 @@ public class UserServiceImplTest {
                 expected: {}
                 actual:   {}
                 """, expected, actual);
+    }
+
+    @Test
+    public void testAddFriend_whenGivenTwoUsers_ShouldAddFriendsInFriendsField() {
+        long firstUserId = 3L;
+        long thirdUserId = 15L;
+        firstUser.setId(firstUserId);
+        thirdUser.setId(thirdUserId);
+        firstUser.setFriends(new HashSet<>());
+        thirdUser.setFriends(new HashSet<>());
+
+        Collection<User> expected1 = Set.of(firstUser.toBuilder().build());
+        Collection<User> expected2 = Set.of(thirdUser.toBuilder().build());
+        Collection<User> actual1;
+        Collection<User> actual2;
+
+        when(userStorage.getById(firstUserId)).thenReturn(Optional.ofNullable(firstUser));
+        when(userStorage.getById(thirdUserId)).thenReturn(Optional.ofNullable(thirdUser));
+        doNothing().when(userStorage).addFriend(firstUser, thirdUser);
+        userService.addFriend(firstUserId, thirdUserId);
+        actual1 = thirdUser.getFriends();
+        actual2 = firstUser.getFriends();
+
+        assertIterableEquals(expected1, actual1);
+        assertIterableEquals(expected2, actual2);
+        log.info("""
+                
+                
+                testAddFriend_whenGivenTwoUsers_ShouldAddFriendsInFriendsField
+                
+                expected1: {}
+                actual1:   {}
+                
+                expected2: {}
+                actual2:   {}
+                """, expected1, actual1, actual2, expected2);
+    }
+
+    @Test
+    public void testDeleteFriend_whenGivenTwoUsers_ShouldRemoveFriendsInFriendsField() {
+        long firstUserId = 3L;
+        long secondUserId = 2L;
+        long thirdUserId = 15L;
+        firstUser.setId(firstUserId);
+        secondUser.setId(secondUserId);
+        thirdUser.setId(thirdUserId);
+        firstUser.setFriends(new HashSet<>(Set.of(secondUser, thirdUser)));
+        secondUser.setFriends(new HashSet<>(Set.of(firstUser, thirdUser)));
+        thirdUser.setFriends(new HashSet<>(Set.of(firstUser, secondUser)));
+
+
+        Collection<User> expected = new HashSet<>(Set.of(secondUser));
+        Collection<User> actual1;
+        Collection<User> actual2;
+
+        when(userStorage.getById(firstUserId)).thenReturn(Optional.ofNullable(firstUser));
+        when(userStorage.getById(thirdUserId)).thenReturn(Optional.ofNullable(thirdUser));
+        doNothing().when(userStorage).deleteFriend(firstUser, thirdUser);
+        userService.deleteFriend(firstUserId, thirdUserId);
+        actual1 = thirdUser.getFriends();
+        actual2 = firstUser.getFriends();
+
+        assertIterableEquals(expected, actual1);
+        assertIterableEquals(expected, actual2);
+        log.info("""
+                
+                
+                testDeleteFriend_whenGivenTwoUsers_ShouldRemoveFriendsInFriendsField
+                
+                expected: {}
+                actual1:   {}
+                
+                expected: {}
+                actual2:   {}
+                """, expected, actual1, actual2, expected);
     }
 
 }
