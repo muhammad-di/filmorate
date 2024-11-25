@@ -47,9 +47,37 @@ public class UserServiceImpl implements UserService {
         return userStorage.findAll();
     }
 
+    @Override
+    public void addFriend(final long userId, final long newFriendId) {
+        final User user = checkIfExist(userId);
+        final User newFriend = checkIfExist(newFriendId);
+
+        user.getFriends().add(newFriend);
+        newFriend.getFriends().add(user);
+
+        userStorage.addFriend(user, newFriend);
+    }
+
+    @Override
+    public void deleteFriend(long userId, long exFriendId) {
+        final User user = checkIfExist(userId);
+        final User exFriend = checkIfExist(exFriendId);
+
+        user.getFriends().remove(exFriend);
+        exFriend.getFriends().remove(user);
+
+        userStorage.deleteFriend(user, exFriend);
+    }
+
+
     private void contains(final User user) {
         if (!userStorage.contains(user)) {
             throw new ValidationException("User does not exist");
         }
+    }
+
+    private User checkIfExist(final long userId) {
+        return userStorage.getById(userId)
+                .orElseThrow(() -> new ValidationException("User does not exist"));
     }
 }

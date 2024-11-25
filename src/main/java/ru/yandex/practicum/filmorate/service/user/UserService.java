@@ -10,4 +10,9 @@ public interface UserService {
     User update(User user);
 
     Collection<User> findAll();
+
+    void addFriend(long userId, long newFriendId);
+
+    void deleteFriend(long userId, long exFriendId);
+
 }

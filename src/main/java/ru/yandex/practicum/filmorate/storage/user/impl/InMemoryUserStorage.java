@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -33,4 +34,26 @@ public class InMemoryUserStorage implements UserStorage {
     public Collection<User> findAll() {
         return users.values();
     }
+
+    @Override
+    public void addFriend(final User user, final User newFriend) {
+        updateBothUsers(user, newFriend);
+    }
+
+    @Override
+    public void deleteFriend(final User user, final User exFriend) {
+        updateBothUsers(user, exFriend);
+    }
+
+    @Override
+    public Optional<User> getById(final long id) {
+        return Optional.ofNullable(users.get(id));
+    }
+
+    private void updateBothUsers(final User firstUser, final User secondUser) {
+        users.put(firstUser.getId(), firstUser);
+        users.put(secondUser.getId(), secondUser);
+    }
+
+
 }
