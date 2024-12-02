@@ -1,10 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,19 +14,30 @@ import java.util.Set;
 public class User {
     private static long nextId = 0;
     private long id;
-    @Email
     private final String email;
-    @NotBlank
     private String login;
     private String name;
     private LocalDate birthday;
-    private Set<User> friends;
+    private Set<Long> friends;
 
     public static long getNextId() {
         return ++nextId;
     }
 
+    @Override
     public String toString() {
-        return "User.UserBuilder(id=" + this.id + ", email=" + this.email + ", login=" + this.login + ", name=" + this.name + ", birthday=" + this.birthday + ", friends=" + this.friends.stream().map(User::getId).toList() + ")";
+        String friendsIdList = "";
+        if (!ObjectUtils.isEmpty(friends)) {
+            friendsIdList = friends.toString();
+        }
+
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", birthday=" + birthday +
+                ", friends=" + friendsIdList +
+                '}';
     }
 }

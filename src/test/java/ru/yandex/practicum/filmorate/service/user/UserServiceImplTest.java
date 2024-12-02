@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.exseption.ValidationException;
+import ru.yandex.practicum.filmorate.exseption.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.user.impl.UserServiceImpl;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
@@ -124,12 +124,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdate_whenGivenArgumentUserWhichDoesNotExist_ShouldThrowValidationException() {
+    public void testUpdate_whenGivenArgumentUserWhichDoesNotExist_ShouldThrowEntityNotFoundException() {
         String actual;
         String expected = "User does not exist";
 
         when(userStorage.contains(firstUser)).thenReturn(false);
-        ValidationException exception = assertThrows(ValidationException.class, () -> userService.update(firstUser));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> userService.update(firstUser));
         actual = exception.getMessage();
 
         assertEquals(expected, actual);
@@ -209,10 +209,10 @@ public class UserServiceImplTest {
         firstUser.setFriends(new HashSet<>());
         thirdUser.setFriends(new HashSet<>());
 
-        Collection<User> expected1 = Set.of(firstUser.toBuilder().build());
-        Collection<User> expected2 = Set.of(thirdUser.toBuilder().build());
-        Collection<User> actual1;
-        Collection<User> actual2;
+        Collection<Long> expected1 = Set.of(firstUserId);
+        Collection<Long> expected2 = Set.of(thirdUserId);
+        Collection<Long> actual1;
+        Collection<Long> actual2;
 
         when(userStorage.getById(firstUserId)).thenReturn(Optional.ofNullable(firstUser));
         when(userStorage.getById(thirdUserId)).thenReturn(Optional.ofNullable(thirdUser));
@@ -244,14 +244,14 @@ public class UserServiceImplTest {
         firstUser.setId(firstUserId);
         secondUser.setId(secondUserId);
         thirdUser.setId(thirdUserId);
-        firstUser.setFriends(new HashSet<>(Set.of(secondUser, thirdUser)));
-        secondUser.setFriends(new HashSet<>(Set.of(firstUser, thirdUser)));
-        thirdUser.setFriends(new HashSet<>(Set.of(firstUser, secondUser)));
+        firstUser.setFriends(new HashSet<>(Set.of(secondUserId, thirdUserId)));
+        secondUser.setFriends(new HashSet<>(Set.of(firstUserId, thirdUserId)));
+        thirdUser.setFriends(new HashSet<>(Set.of(firstUserId, secondUserId)));
 
 
-        Collection<User> expected = new HashSet<>(Set.of(secondUser));
-        Collection<User> actual1;
-        Collection<User> actual2;
+        Collection<Long> expected = new HashSet<>(Set.of(secondUserId));
+        Collection<Long> actual1;
+        Collection<Long> actual2;
 
         when(userStorage.getById(firstUserId)).thenReturn(Optional.ofNullable(firstUser));
         when(userStorage.getById(thirdUserId)).thenReturn(Optional.ofNullable(thirdUser));
@@ -273,6 +273,38 @@ public class UserServiceImplTest {
                 expected: {}
                 actual2:   {}
                 """, expected, actual1, actual2, expected);
+    }
+
+    @Test
+    public void testGetMutualFriends_whenGivenTwoUsers_ShouldReturnCommon() {
+        long firstUserId = 3L;
+        long secondUserId = 2L;
+        long thirdUserId = 15L;
+        firstUser.setId(firstUserId);
+        secondUser.setId(secondUserId);
+        thirdUser.setId(thirdUserId);
+        firstUser.setFriends(new HashSet<>(Set.of(secondUserId, thirdUserId)));
+        secondUser.setFriends(new HashSet<>(Set.of(firstUserId, thirdUserId)));
+        thirdUser.setFriends(new HashSet<>(Set.of(firstUserId, secondUserId)));
+
+        Collection<User> expected = new HashSet<>(Set.of(secondUser));
+        Collection<User> actual;
+
+        when(userStorage.getById(firstUserId)).thenReturn(Optional.ofNullable(firstUser));
+        when(userStorage.getById(thirdUserId)).thenReturn(Optional.ofNullable(thirdUser));
+        when(userStorage.getCommonFriends(firstUser, thirdUser)).thenReturn(Set.of(secondUser));
+        actual = userService.getCommonFriends(firstUserId, thirdUserId);
+
+        assertIterableEquals(expected, actual);
+        log.info("""
+                
+                
+                testGetMutualFriends_whenGivenTwoUsers_ShouldReturnMutual
+                
+                expected: {}
+                actual:   {}
+                
+                """, expected, actual);
     }
 
 }
