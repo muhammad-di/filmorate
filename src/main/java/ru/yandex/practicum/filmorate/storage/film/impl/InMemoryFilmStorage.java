@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -35,6 +36,12 @@ public class InMemoryFilmStorage implements FilmStorage {
         log.info("Repository: updated film with ID {}", film.getId());
 
         return film;
+    }
+
+    @Override
+    public Optional<Film> findById(final long id) {
+        log.info("Repository: getting film by ID {}", id);
+        return Optional.ofNullable(films.get(id));
     }
 
     @Override
