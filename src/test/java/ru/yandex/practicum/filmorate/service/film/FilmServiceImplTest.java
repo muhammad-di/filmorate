@@ -196,7 +196,7 @@ public class FilmServiceImplTest {
         firstFilm.setId(firstFilmId);
         secondFilm.setId(secondFilmId);
         thirdFilm.setId(thirdFilmId);
-        listOfFilms = new ArrayList<>(List.of(firstFilm, secondFilm, thirdFilm));
+        Collection<Film> listOfFilms = new ArrayList<>(List.of(firstFilm, secondFilm, thirdFilm));
 
 
         Collection<Film> actual;
