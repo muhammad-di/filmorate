@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Film.
@@ -23,6 +24,7 @@ public class Film {
     private final LocalDate releaseDate;
     @Min(1)
     private final long duration;
+    private final Set<Long> likes;
 
     public static long getNextId() {
         return ++nextId;
