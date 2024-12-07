@@ -51,7 +51,9 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Collection<Film> findAll() {
-        return List.of();
+        log.info("Service: starting to get all films");
+
+        return filmStorage.findAll();
     }
 
     @Override

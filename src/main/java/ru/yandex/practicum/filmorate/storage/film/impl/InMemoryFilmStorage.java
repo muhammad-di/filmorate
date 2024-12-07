@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.util.Collection;
@@ -48,7 +47,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Collection<Film> findAll() {
         log.info("Repository: returning all films size {}", films.size());
 
-
         return films.values();
     }
 
@@ -64,7 +62,7 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .toList();
 
 
-        return mostPopular.subList(0, count-1);
+        return mostPopular.subList(0, count - 1);
     }
 
     @Override
