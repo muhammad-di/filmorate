@@ -21,7 +21,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
 
     @Override
-    public Film create(Film film) {
+    public Film create(final Film film) {
         film.setId(Film.getNextId());
         films.put(film.getId(), film);
         log.info("Repository: created film with ID {}", film.getId());
@@ -30,7 +30,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film update(Film film) {
+    public Film update(final Film film) {
         films.put(film.getId(), film);
         log.info("Repository: updated film with ID {}", film.getId());
 
@@ -46,7 +46,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Collection<Film> findPopular(int count) {
+    public Collection<Film> findPopular(final int count) {
         log.info("Repository: returning {} most popular Films", count);
 
         Comparator<Film> comparator = Comparator.comparingLong(f -> f.getLikes().size());
@@ -61,13 +61,13 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void addLike(Film film) {
+    public void addLike(final Film film) {
         update(film);
         log.info("Repository: like was successfully added");
     }
 
     @Override
-    public void removeLike(Film film) {
+    public void removeLike(final Film film) {
         update(film);
         log.info("Repository: like was successfully deleted");
     }
