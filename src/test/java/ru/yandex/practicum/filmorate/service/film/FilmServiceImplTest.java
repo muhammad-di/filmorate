@@ -165,7 +165,6 @@ public class FilmServiceImplTest {
         );
         actual = exception.getMessage();
 
-
         assertEquals(expected, actual);
     }
 }
