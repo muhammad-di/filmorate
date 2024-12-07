@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service.film;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exseption.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.impl.FilmServiceImpl;
@@ -16,6 +17,7 @@ import ru.yandex.practicum.filmorate.validation.film.impl.FilmReleaseDateValidat
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -131,6 +133,39 @@ public class FilmServiceImplTest {
                 () -> filmService.create(firstFilm));
 
         actual = exception.getMessage();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindById_whenGivenArgumentId_ShouldReturnFilm() {
+        long firstFilmId = 1L;
+        Film actual;
+        Film expected = firstFilm.toBuilder().id(firstFilmId).build();
+        firstFilm.setId(firstFilmId);
+
+        when(filmStorage.findById(firstFilmId)).thenReturn(Optional.of(firstFilm));
+
+        actual = filmService.findByIf(firstFilmId);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindById_whenGivenArgumentIdNonExistingFilm_ShouldThrowEntityNotFoundException() {
+        long firstFilmId = 222L;
+        String actual;
+        String expected = "Film does not exist";
+        firstFilm.setId(firstFilmId);
+
+        when(filmStorage.findById(firstFilmId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> filmService.findByIf(firstFilmId)
+        );
+        actual = exception.getMessage();
+
+
         assertEquals(expected, actual);
     }
 }
