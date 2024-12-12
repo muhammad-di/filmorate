@@ -81,11 +81,6 @@ public class UserControllerUnitTest {
         actual = controller.create(firstUser);
 
         assertEquals(expected, actual);
-        log.info("""
-                testCreate_whenGivenArgumentUserWithoutIdParameter_ShouldReturnUser
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -104,11 +99,6 @@ public class UserControllerUnitTest {
         actual = controller.update(firstUser);
 
         assertEquals(expected, actual);
-        log.info("""
-                testUpdate_whenGivenArgumentUser_ShouldReturnUser
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -133,11 +123,6 @@ public class UserControllerUnitTest {
         actual = controller.findAll();
 
         assertIterableEquals(expected, actual);
-        log.info("""
-                testFindAll_whenGivenNoArgument_ShouldReturnCollectionOfUsers
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 //
 //    @Test
