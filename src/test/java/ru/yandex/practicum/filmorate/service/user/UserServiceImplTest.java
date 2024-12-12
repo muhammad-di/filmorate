@@ -89,13 +89,6 @@ public class UserServiceImplTest {
         actual = userStorage.create(firstUser);
 
         assertEquals(expected, actual);
-        log.info("""
-                
-                testCreate_whenGivenArgumentUser_ShouldReturnUser
-                
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -114,13 +107,6 @@ public class UserServiceImplTest {
         actual = userStorage.create(firstUser);
 
         assertEquals(expected, actual);
-        log.info("""
-                
-                testUpdate_whenGivenArgumentUser_ShouldReturnUser
-                
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -133,14 +119,6 @@ public class UserServiceImplTest {
         actual = exception.getMessage();
 
         assertEquals(expected, actual);
-        log.info("""
-                
-                
-                testUpdate_whenGivenArgumentUserWhichDoesNotExist_ShouldThrowValidationException
-                
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -160,14 +138,6 @@ public class UserServiceImplTest {
         actual = assertDoesNotThrow(() -> userService.update(firstUser));
 
         assertEquals(expected, actual);
-        log.info("""
-                
-                
-                testUpdate_whenGivenArgumentUserExists_ShouldNotThrowValidationException
-                
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -190,14 +160,6 @@ public class UserServiceImplTest {
         actual = userService.findAll();
 
         assertIterableEquals(expected, actual);
-        log.info("""
-                
-                
-                testFindAll_whenGivenNoArgument_ShouldReturnListOfAllUsers
-                
-                expected: {}
-                actual:   {}
-                """, expected, actual);
     }
 
     @Test
@@ -223,17 +185,6 @@ public class UserServiceImplTest {
 
         assertIterableEquals(expected1, actual1);
         assertIterableEquals(expected2, actual2);
-        log.info("""
-                
-                
-                testAddFriend_whenGivenTwoUsers_ShouldAddFriendsInFriendsField
-                
-                expected1: {}
-                actual1:   {}
-                
-                expected2: {}
-                actual2:   {}
-                """, expected1, actual1, actual2, expected2);
     }
 
     @Test
@@ -262,17 +213,6 @@ public class UserServiceImplTest {
 
         assertIterableEquals(expected, actual1);
         assertIterableEquals(expected, actual2);
-        log.info("""
-                
-                
-                testDeleteFriend_whenGivenTwoUsers_ShouldRemoveFriendsInFriendsField
-                
-                expected: {}
-                actual1:   {}
-                
-                expected: {}
-                actual2:   {}
-                """, expected, actual1, actual2, expected);
     }
 
     @Test
@@ -296,15 +236,6 @@ public class UserServiceImplTest {
         actual = userService.getCommonFriends(firstUserId, thirdUserId);
 
         assertIterableEquals(expected, actual);
-        log.info("""
-                
-                
-                testGetMutualFriends_whenGivenTwoUsers_ShouldReturnMutual
-                
-                expected: {}
-                actual:   {}
-                
-                """, expected, actual);
     }
 
 }
