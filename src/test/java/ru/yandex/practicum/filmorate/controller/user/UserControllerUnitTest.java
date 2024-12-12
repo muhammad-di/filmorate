@@ -82,9 +82,7 @@ public class UserControllerUnitTest {
 
         assertEquals(expected, actual);
         log.info("""
-                
                 testCreate_whenGivenArgumentUserWithoutIdParameter_ShouldReturnUser
-                
                 expected: {}
                 actual:   {}
                 """, expected, actual);
@@ -107,9 +105,7 @@ public class UserControllerUnitTest {
 
         assertEquals(expected, actual);
         log.info("""
-                
                 testUpdate_whenGivenArgumentUser_ShouldReturnUser
-                
                 expected: {}
                 actual:   {}
                 """, expected, actual);
@@ -138,9 +134,7 @@ public class UserControllerUnitTest {
 
         assertIterableEquals(expected, actual);
         log.info("""
-                
                 testFindAll_whenGivenNoArgument_ShouldReturnCollectionOfUsers
-                
                 expected: {}
                 actual:   {}
                 """, expected, actual);
