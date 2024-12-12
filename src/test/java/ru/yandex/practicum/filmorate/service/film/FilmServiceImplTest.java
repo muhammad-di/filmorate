@@ -6,6 +6,8 @@ import ru.yandex.practicum.filmorate.exseption.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.impl.FilmServiceImpl;
+import ru.yandex.practicum.filmorate.service.user.UserService;
+import ru.yandex.practicum.filmorate.service.user.impl.UserServiceImpl;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.impl.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.when;
 
 public class FilmServiceImplTest {
     private FilmService filmService;
+    private UserService userService;
     private FilmStorage filmStorage;
     private FilmValidator filmDescriptionValidator;
     private FilmValidator filmDurationValidator;
@@ -43,7 +46,7 @@ public class FilmServiceImplTest {
     @BeforeEach
     public void init() {
         filmStorage = mock(InMemoryFilmStorage.class);
-
+        userService = mock(UserServiceImpl.class);
         filmDescriptionValidator = mock(FilmDescriptionValidator.class);
         filmDurationValidator = mock(FilmDurationValidator.class);
         filmNameValidator = mock(FilmNameValidator.class);
@@ -56,7 +59,7 @@ public class FilmServiceImplTest {
                 filmReleaseDateValidator
         );
 
-        filmService = new FilmServiceImpl(filmStorage, filmValidators);
+        filmService = new FilmServiceImpl(filmStorage, userService, filmValidators);
     }
 
     @BeforeEach
@@ -165,7 +168,7 @@ public class FilmServiceImplTest {
 
         when(filmStorage.findById(firstFilmId)).thenReturn(Optional.of(firstFilm));
 
-        actual = filmService.findByIf(firstFilmId);
+        actual = filmService.findById(firstFilmId);
 
         assertEquals(expected, actual);
     }
@@ -181,7 +184,7 @@ public class FilmServiceImplTest {
 
         EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
-                () -> filmService.findByIf(firstFilmId)
+                () -> filmService.findById(firstFilmId)
         );
         actual = exception.getMessage();
 

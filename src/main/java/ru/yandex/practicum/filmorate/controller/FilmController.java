@@ -43,7 +43,7 @@ public class FilmController {
     public Film findById(@PathVariable @Positive long id) {
         log.info("Controller: getting film with ID {}", id);
 
-        return filmService.findByIf(id);
+        return filmService.findById(id);
     }
 
     @GetMapping
@@ -52,4 +52,6 @@ public class FilmController {
 
         return filmService.findAll();
     }
+
+
 }

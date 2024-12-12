@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.service.film;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 
@@ -10,7 +9,7 @@ public interface FilmService {
 
     Film update(Film film);
 
-    Film findByIf(long id);
+    Film findById(long id);
 
 
     Collection<Film> findAll();

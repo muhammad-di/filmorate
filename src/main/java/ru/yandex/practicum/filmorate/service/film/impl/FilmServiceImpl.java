@@ -41,7 +41,7 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Film findByIf(final long id) {
+    public Film findById(final long id) {
         log.info("Service: getting film by ID {}", id);
 
         log.info("Service: starting request to repository to get film by ID {}", id);
