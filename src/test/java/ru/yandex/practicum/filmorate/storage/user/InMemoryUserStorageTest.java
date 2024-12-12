@@ -68,15 +68,6 @@ public class InMemoryUserStorageTest {
         actual = userStorage.getCommonFriends(firstUser, thirdUser);
 
         assertIterableEquals(expected, actual);
-        log.info("""
-                
-                
-                testGetMutualFriends_whenGivenTwoUsers_ShouldReturnMutual
-                
-                expected: {}
-                actual:   {}
-                
-                """, expected, actual);
     }
 
 }
