@@ -69,19 +69,18 @@ public class FilmServiceImpl implements FilmService {
     public void addLike(final long id, final long userId) {
         log.info("Service: starting to add like from user with ID {} to film with ID {}", userId, id);
 
-        userService.contains(userId);
-        log.info("Service: validated existence of user with ID {}", userId);
-        Film film = getIfExist(id);
-        log.info("Service: validated existence of film with ID {}", id);
-
-        log.info("Service: saving to storage updated film with ID {}", id);
+        Film film = validateUserAndFilm(id, userId);
         film.getLikes().add(userId);
-        filmStorage.addLike(film);
+        saveFilmToStorage(film);
     }
 
     @Override
     public void removeLike(long id, long userId) {
+        log.info("Service: starting to delete like for user with ID {} from film with ID {}", userId, id);
 
+        Film film = validateUserAndFilm(id, userId);
+        film.getLikes().remove(userId);
+        saveFilmToStorage(film);
     }
 
     private void validate(Film film) {
@@ -95,5 +94,19 @@ public class FilmServiceImpl implements FilmService {
                     return new EntityNotFoundException("Film does not exist");
                 }
         );
+    }
+
+    private Film validateUserAndFilm(final long id, final long userId) {
+        userService.contains(userId);
+        log.info("Service: validated existence of user with ID {}", userId);
+        Film film = getIfExist(id);
+        log.info("Service: validated existence of film with ID {}", id);
+
+        return film;
+    }
+
+    private void saveFilmToStorage(final Film film) {
+        log.info("Service: saving to storage updated film with ID {}", film.getId());
+        filmStorage.addLike(film);
     }
 }

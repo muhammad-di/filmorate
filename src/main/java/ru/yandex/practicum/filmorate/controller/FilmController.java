@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,21 +27,21 @@ public class FilmController {
     private final FilmService filmService;
 
     @PostMapping
-    public Film create(@RequestBody @Valid Film film) {
+    public Film create(@RequestBody @Valid final Film film) {
         log.info("Controller: creating film with name {}", film.getName());
 
         return filmService.create(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid Film film) {
+    public Film update(@RequestBody @Valid final Film film) {
         log.info("Controller: updating film with name {}", film.getName());
 
         return filmService.update(film);
     }
 
     @GetMapping("/{id}")
-    public Film findById(@PathVariable @Positive long id) {
+    public Film findById(@PathVariable @Positive final long id) {
         log.info("Controller: getting film with ID {}", id);
 
         return filmService.findById(id);
@@ -54,4 +55,19 @@ public class FilmController {
     }
 
 
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable @Valid final long id,
+                        @PathVariable @Valid final long userId) {
+        log.info("Controller: adding like from user with ID {} to film with ID {}", id, userId);
+
+        filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping("{id}/like/{userId}")
+    public void deleteLike(@PathVariable @Valid final long id,
+                           @PathVariable @Valid final long userId) {
+        log.info("Controller: deleting like from user with ID {} for film with ID {}", id, userId);
+
+        filmService.removeLike(id, userId);
+    }
 }
