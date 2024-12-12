@@ -28,14 +28,14 @@ public class FilmController {
     private final FilmService filmService;
 
     @PostMapping
-    public Film create(@RequestBody @Valid final Film film) {
+    public Film create(@RequestBody final Film film) {
         log.info("Controller: creating film with name {}", film.getName());
 
         return filmService.create(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid final Film film) {
+    public Film update(@RequestBody final Film film) {
         log.info("Controller: updating film with name {}", film.getName());
 
         return filmService.update(film);

@@ -51,7 +51,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Collection<Film> findPopular(final int count) {
+    public Collection<Film> findPopular(int count) {
         log.info("Repository: returning {} most popular Films", count);
 
         Comparator<Film> comparator = Comparator.comparingLong(f -> f.getLikes().size());
@@ -62,6 +62,9 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .toList();
 
 
+        if (count > mostPopular.size()) {
+            count = mostPopular.size();
+        }
         return mostPopular.subList(0, count - 1);
     }
 

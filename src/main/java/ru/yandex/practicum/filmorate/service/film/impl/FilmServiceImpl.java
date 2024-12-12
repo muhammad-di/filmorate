@@ -35,6 +35,8 @@ public class FilmServiceImpl implements FilmService {
     public Film update(Film film) {
         log.info("Service: update creation of a film with name {}", film.getName());
         validate(film);
+        getIfExist(film.getId());
+        log.info("Service: validated existence of film with ID {}", film.getId());
 
         log.info("Service: updating a film with name {} into repository", film.getName());
         return filmStorage.update(film);
