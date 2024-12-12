@@ -20,4 +20,6 @@ public interface UserService {
     void deleteFriend(long userId, long exFriendId);
 
     Collection<User> getCommonFriends(long firstUserId, long secondUserId);
+
+    void contains(final long userId);
 }

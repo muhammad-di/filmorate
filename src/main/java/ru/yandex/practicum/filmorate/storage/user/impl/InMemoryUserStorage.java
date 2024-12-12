@@ -36,6 +36,11 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
+    public boolean contains(final long userId) {
+        return users.containsKey(userId);
+    }
+
+    @Override
     public User update(final User user) {
         users.put(user.getId(), user);
 

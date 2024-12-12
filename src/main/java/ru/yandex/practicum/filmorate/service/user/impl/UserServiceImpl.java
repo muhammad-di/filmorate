@@ -103,7 +103,16 @@ public class UserServiceImpl implements UserService {
         return userStorage.getCommonFriends(firstUser, secondUser);
     }
 
+    @Override
+    public void contains(final long userId) {
+        log.info("Service: started to check if user with ID {} exist", userId);
+        if (!userStorage.contains(userId)) {
+            throw new EntityNotFoundException("User does not exist");
+        }
+    }
+
     private void contains(final User user) {
+        log.info("Service: started to check if user with ID {} exist", user.getId());
         if (!userStorage.contains(user)) {
             throw new EntityNotFoundException("User does not exist");
         }
