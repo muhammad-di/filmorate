@@ -1,61 +1,81 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.yandex.practicum.filmorate.exseption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
+import ru.yandex.practicum.filmorate.service.film.FilmService;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/films")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 @Slf4j
 public class FilmController {
-    private final List<FilmValidator> validators;
-    private final Map<Long, Film> films = new ConcurrentHashMap<>();
-
+    private final FilmService filmService;
 
     @PostMapping
-    public Film create(@RequestBody @Valid Film film) {
-        validators.forEach(v -> v.validate(film));
-        film.setId(Film.getNextId());
-        films.put(film.getId(), film);
-        log.debug("users: {}", film);
-        return film;
+    public Film create(@RequestBody final Film film) {
+        log.info("Controller: creating film with name {}", film.getName());
+
+        return filmService.create(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid Film film) {
-        contains(film);
-        validators.forEach(v -> v.validate(film));
-        films.put(film.getId(), film);
-        log.debug("films: {}", films);
-        return film;
+    public Film update(@RequestBody final Film film) {
+        log.info("Controller: updating film with name {}", film.getName());
+
+        return filmService.update(film);
+    }
+
+    @GetMapping("/{id}")
+    public Film findById(@PathVariable @Positive final long id) {
+        log.info("Controller: getting film with ID {}", id);
+
+        return filmService.findById(id);
     }
 
     @GetMapping
     public Collection<Film> findAll() {
-        return films.values();
+        log.info("Controller: getting all films");
+
+        return filmService.findAll();
     }
 
 
-    private void contains(Film film) {
-        if (!films.containsKey(film.getId())) {
-            throw new ValidationException("Film does not exist");
-        }
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable @Valid final long id,
+                        @PathVariable @Valid final long userId) {
+        log.info("Controller: adding like from user with ID {} to film with ID {}", id, userId);
+
+        filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping("{id}/like/{userId}")
+    public void deleteLike(@PathVariable @Valid final long id,
+                           @PathVariable @Valid final long userId) {
+        log.info("Controller: deleting like from user with ID {} for film with ID {}", id, userId);
+
+        filmService.removeLike(id, userId);
+    }
+
+    @GetMapping("/popular")
+    public Collection<Film> findPopular(@RequestParam(defaultValue = "10") @Valid final int count) {
+        log.info("Controller: getting all popular films");
+
+        return filmService.findPopular(count);
     }
 }
