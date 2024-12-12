@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exseption.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
+import ru.yandex.practicum.filmorate.service.user.UserService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.validation.film.FilmValidator;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FilmServiceImpl implements FilmService {
     private final FilmStorage filmStorage;
+    private final UserService userService;
     private final List<FilmValidator> filmValidators;
 
 
@@ -57,13 +59,24 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Collection<Film> findPopular(int count) {
-        return List.of();
+    public Collection<Film> findPopular(final int count) {
+        log.info("Service: starting to get {} popular films", count);
+
+        return filmStorage.findPopular(count);
     }
 
     @Override
-    public void addLike(long id, long userId) {
+    public void addLike(final long id, final long userId) {
+        log.info("Service: starting to add like from user with ID {} to film with ID {}", userId, id);
 
+        userService.contains(userId);
+        log.info("Service: validated existence of user with ID {}", userId);
+        Film film = getIfExist(id);
+        log.info("Service: validated existence of film with ID {}", id);
+
+        log.info("Service: saving to storage updated film with ID {}", id);
+        film.getLikes().add(userId);
+        filmStorage.addLike(film);
     }
 
     @Override
